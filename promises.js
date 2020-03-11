@@ -86,29 +86,28 @@ function extractStatusCode(response) {
 // })
 
 // Error Handling - Executing Promises in Parallel
+// Note: that the console output shows that these requests are made all at once with no guaranteed order
+// const queryParameters = ['ahoy', 'hello', 'hallo'];
 
-const queryParameters = ['ahoy', 'hello', 'hallo'];
+// const fetchPromises = queryParameters.map(queryParam => {
+//     return fetch(`http://httpbin.org/get?${queryParam}`)
+//     .then(response => {
+//         return response.json()
+//     })
+//     .then(response => {
+//         // extract the URL property from the response object
+//         let url = response.url;
+//         console.log('Response from: %s', url);
+//         return url;
+//     });
+// });
 
-const fetchPromises = queryParameters.map(queryParam => {
-    return fetch(`http://httpbin.org/get?${queryParam}`)
-    .then(response => {
-        return response.json()
-    })
-    .then(response => {
-        // extract the URL property from the response object
-        let url = response.url;
-        console.log('Response from: %s', url);
-        return url;
-    });
-});
-
-Promise.all(fetchPromises).then(allUrls => {
-    console.log('The return values of all requests are passed as an array: ');
-    console.log(allUrls);
-}).catch(error => {
-    console.error('A call failerd: ');
-    console.error(error.message);
-})
-
+// Promise.all(fetchPromises).then(allUrls => {
+//     console.log('The return values of all requests are passed as an array: ');
+//     console.log(allUrls);
+// }).catch(error => {
+//     console.error('A call failerd: ');
+//     console.error(error.message);
+// })
 
 
