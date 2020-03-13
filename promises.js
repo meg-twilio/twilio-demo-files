@@ -110,4 +110,62 @@ function extractStatusCode(response) {
 //     console.error(error.message);
 // })
 
+// // Error Handling -  Promises in a Series with forEach method
+// const queryParameters = ['ahoy', 'hello', 'hallo'];
 
+// // start with an immediately resolving promise and an empty list
+// let mostRecentPromise = Promise.resolve([]);
+// queryParameters.forEach(queryParam => {
+//     // chain the promise to the previous one
+//     mostRecentPromise = mostRecentPromise.then(requestedUrlsSoFar => {
+//         return fetch(`http://httpbin.org/get?${queryParam}`)
+//         .then(response => {
+//             // parse response body as JSON
+//             return response.json()
+//         })
+//         .then(response => {
+//             // extract the URL property from the response object
+//             let url = response.url;
+//             console.log(`Response from: %s`, url);
+//             requestedUrlsSoFar.push(url);
+//             return requestedUrlsSoFar;
+//         });
+//     });
+// });
+
+// mostRecentPromise.then(allUrls => {
+//     console.log(`The return values of all requests are passed as an array:`);
+//     console.log(allUrls);
+// }).catch(error => {
+//     console.error('A call failed: ');
+//     console.error(error.message);
+// });
+
+// Error Handling -  Promises in a Series with reduce method
+const queryParameters = ['ahoy', 'hello', 'hallo'];
+
+// start with an immediately resolving promise and an empty list
+let mostRecentPromise = queryParameters.reduce((previousPromise, queryParam) => {
+    return previousPromise.then(requestedUrlsSoFar => {
+        return fetch(`http://httpbin.org/get?${queryParam}`)
+        .then(response => {
+            // parse response body as JSON
+            return response.json()
+        })
+        .then(response => {
+            // extract the URL property from the response object
+            let url = response.url;
+            console.log('Response from: %s', url);
+            requestedUrlsSoFar.push(url);
+            return requestedUrlsSoFar;
+        });
+    });
+}, Promise.resolve([]))
+
+mostRecentPromise.then(allUrls => {
+    console.log(`The return values of all requests are passed as an array: `);
+    console.log(allUrls);
+}).catch(error => {
+    console.error('a call failed: ');
+    console.error(error.message);
+});
